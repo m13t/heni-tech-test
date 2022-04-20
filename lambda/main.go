@@ -12,17 +12,21 @@ import (
 )
 
 var (
+	// Get the source control information for the current build
 	vcsInfo *vcs.Info = vcs.GetInfo()
 )
 
 func main() {
+	// Make the handler available for Remote Procedure Call by AWS Lambda
 	lambda.Start(handler)
 }
 
+// handler is the main Lambda entry point for the request/response cycle
 func handler(ctx context.Context, event events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
 	fmt.Printf("Begin Request\n")
 	defer fmt.Printf("Request Completed\n")
 
+	// Delegate request based on routing key
 	switch event.RouteKey {
 	case "GET /":
 		return handleGetRoot(ctx, event)
@@ -30,12 +34,15 @@ func handler(ctx context.Context, event events.APIGatewayV2HTTPRequest) (events.
 		return handleGetBuildInfo(ctx, event)
 	}
 
+	// Return an error if no route was matched
 	return events.APIGatewayV2HTTPResponse{
 		StatusCode: http.StatusInternalServerError,
 		Body:       "Cannot handle request",
 	}, nil
 }
 
+// handleGetRoot is the default handler for the root path
+// and returns a simple 'Hello, World!' response
 func handleGetRoot(ctx context.Context, event events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
 	return events.APIGatewayV2HTTPResponse{
 		StatusCode: http.StatusOK,
@@ -43,6 +50,8 @@ func handleGetRoot(ctx context.Context, event events.APIGatewayV2HTTPRequest) (e
 	}, nil
 }
 
+// handleGetBuildInfo is the handler for the /build-info path
+// and returns a JSON response of the source control information
 func handleGetBuildInfo(ctx context.Context, event events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
 	if vcsInfo != nil {
 		vi, err := json.MarshalIndent(vcsInfo, "", "\t")
