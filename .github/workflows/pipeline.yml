@@ -50,7 +50,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: binary
-        path: ../lambda
+        path: ../lambda/lambda
 
     - name: Display structure of downloaded files
       run: ls -R ../
