@@ -5,7 +5,7 @@ The purpose of this repo is to provide a solution to an exercise set out by Heni
 ## Overview
 
 For the purposes of the exercise, ease of readability and limited time constraints, I have opted to implement a monorepo approach. Given the Lambda function
-is a simplistic 'Hello, World' exercise, I have embedded the source code within the `lambda`` directory, and the Terraform code within the `terraform` directory.
+is a simplistic 'Hello, World' exercise, I have embedded the source code within the `lambda` directory, and the Terraform code within the `terraform` directory.
 
 The Lambda function has been written in Golang, for no other reason than the runtime was not stipulated in the brief, it's exceptionally fast, quick to start and can run on Lambda's ARM architecture with little to no extra effort, which has some cost and performance benefits.
 The Lambda function itself will handle two requests, one for routes matching `/`, which returns a simple 200 response with the body as `Hello, World!`. The second route, is `/build-info` which returns a JSON response of the source control information for the repository from which the build was compiled. This is more just to see some kind of change between revisions without having to make trivial code changes for the purposes of testing.
