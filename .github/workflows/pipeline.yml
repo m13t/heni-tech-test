@@ -93,3 +93,7 @@ jobs:
       with:
         # Don't hardcode URL - only here for simplistic purposes. Probably extract from TF outputs
         cmd: 'curl -s https://yk33m8yhtd.execute-api.eu-west-2.amazonaws.com/dev/build-info | jq -r .long'
+    - name: Show remote revision
+      run: 'echo "Deployed revision: ${{ steps.revision.outputs.value }}"'
+    - name: Expect 200 from root route
+      run: 'curl -Lfs https://yk33m8yhtd.execute-api.eu-west-2.amazonaws.com/dev/ > /dev/null'
