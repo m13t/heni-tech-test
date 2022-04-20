@@ -79,3 +79,17 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
+
+  smoke:
+    runs-on: ubuntu-latest
+    needs: terraform
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Get remote build revision
+      uses: sergeysova/jq-action@v2
+      id: revision
+      with:
+        # Don't hardcode URL - only here for simplistic purposes. Probably extract from TF outputs
+        cmd: 'curl -s https://yk33m8yhtd.execute-api.eu-west-2.amazonaws.com/dev/build-info | jq -r .long'
