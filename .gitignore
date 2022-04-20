@@ -1,0 +1,12 @@
+# Ignore go binary output
+/lambda/lambda
+
+# Ignore zipped binary for lambda
+/payload.zip
+
+# Ignore terraform module and provider cache
+terraform/.terraform
+
+# Ignore local terraform state files
+terraform.tfstate
+terraform.tfstate.backup
