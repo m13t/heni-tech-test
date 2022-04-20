@@ -26,6 +26,14 @@ jobs:
     - name: Test
       run: go test -v ./...
 
+    - name: Compress binary
+      uses: crazy-max/ghaction-upx@v1
+      with:
+        version: latest
+        files: |
+          lambda
+        args: --ultra-brute
+
     - name: Upload binary
       uses: actions/upload-artifact@v3
       with:
