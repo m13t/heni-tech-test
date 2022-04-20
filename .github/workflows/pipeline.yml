@@ -52,6 +52,9 @@ jobs:
         name: binary
         path: ../lambda
 
+    - name: Display structure of downloaded files
+      run: ls -R ../
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
 
