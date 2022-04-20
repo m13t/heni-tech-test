@@ -1,31 +1,41 @@
-name: 'Terraform'
+name: Pipeline
 
 on:
-  workflow_run:
-    workflows: [Go]
-    types:
-      - completed
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-
-defaults:
-  run:
-    shell: bash
-    working-directory: terraform
-
 jobs:
-  terraform:
-    name: 'Terraform'
+  build:
     runs-on: ubuntu-latest
-    environment: production
+    defaults:
+      run:
+        working-directory: lambda
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: Build
+      run: go build -v -ldflags="-w -s"
+
+    - name: Test
+      run: go test -v ./...
+
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: terraform
     env:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
 
