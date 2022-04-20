@@ -11,6 +11,7 @@ jobs:
     defaults:
       run:
         working-directory: lambda
+
     steps:
     - uses: actions/checkout@v3
 
@@ -29,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: binary
-        path: lambda
+        path: lambda/lambda
 
   terraform:
     runs-on: ubuntu-latest
@@ -50,7 +51,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: binary
-        path: ../lambda/lambda
 
     - name: Display structure of downloaded files
       run: ls -R ../
